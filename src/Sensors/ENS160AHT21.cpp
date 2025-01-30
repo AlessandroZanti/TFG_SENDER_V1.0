@@ -1,5 +1,17 @@
 #include "Sensors/ENS160AHT21.h"
 
+Adafruit_AHTX0 aht;
+ScioSense_ENS160 ens160(ENS160_I2CADDR_1);
+//ScioSense_ENS160 ens160(ENS160_I2CADDR_0);
+
+//?Cambiar a dht160aht21Humidity o algo asi, para saber de donde proviene cada dato. aniadir variables a los otro sensores
+
+int Humidity;
+int TempC;
+int Tvoc;
+int Eco2;
+int Aqi;
+
 void ENS160AHT21_Setup() {
   Serial.println("------------------------------------------------------------");
   Serial.println("ENS160 + AHT");

@@ -2,7 +2,7 @@
 
 DHT dht(SDHT22, DHTTYPE);
 
-void DHT22_Setup(DHT &dht) {
+void DHT22_Setup() {
 dht.begin(); // Iniciar el sensor
 }
 

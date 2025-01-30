@@ -1,5 +1,7 @@
 #include "Sensors/TSL2561.h"
 
+Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); // Dirección por defecto (0x39)
+
 void TSL2561_Setup() {
   // Inicializar la comunicación serial
   Serial.println("Iniciando TSL2561...");

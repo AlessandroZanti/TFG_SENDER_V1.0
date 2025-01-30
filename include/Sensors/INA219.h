@@ -4,7 +4,7 @@
 //#include <Wire.h>
 #include <Adafruit_INA219.h>
 
-Adafruit_INA219 ina219;
+extern Adafruit_INA219 ina219;
 
 void INA219_Setup();
 void INA219_Get();

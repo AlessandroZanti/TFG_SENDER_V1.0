@@ -1,5 +1,7 @@
 #include "Sensors/INA219.h"
 
+Adafruit_INA219 ina219;
+
 void INA219_Setup() {
   Serial.println("Inicializando INA219...");
 
