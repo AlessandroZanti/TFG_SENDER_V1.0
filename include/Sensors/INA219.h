@@ -4,9 +4,13 @@
 //#include <Wire.h>
 #include <Adafruit_INA219.h>
 
-extern Adafruit_INA219 ina219;
+extern float busVoltage;
+extern float shuntVoltage;
+extern float current_mA;
+extern float power_mW;
 
 void INA219_Setup();
 void INA219_Get();
+void INA219_Print();
 
 #endif

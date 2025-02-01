@@ -1,5 +1,8 @@
 #include "Sensors/DHT22.h"
 
+float DH22_Temp;
+float DHT22_Hum;
+
 DHT dht(SDHT22, DHTTYPE);
 
 void DHT22_Setup() {
@@ -7,18 +10,20 @@ dht.begin(); // Iniciar el sensor
 }
 
 void DHT22_Get() {
-    float temp = dht.readTemperature(); // Leer temperatura en °C
-    float hum = dht.readHumidity();     // Leer humedad en %
+    DH22_Temp = dht.readTemperature(); // Leer temperatura en °C
+    DHT22_Hum = dht.readHumidity();     // Leer humedad en %
+}
 
-    if (!isnan(temp) && !isnan(hum)) {
+void DHT22_Print(){
+    Serial.println("---------------------------------------");
+     if (!isnan(DH22_Temp) && !isnan(DHT22_Hum)) {
         Serial.print("Temperatura: ");
-        Serial.print(temp);
+        Serial.print(DH22_Temp);
         Serial.print(" °C  |  Humedad: ");
-        Serial.print(hum);
+        Serial.print(DHT22_Hum);
         Serial.println(" %");
     } else {
-        Serial.println("Error al leer el sensor");
+        Serial.println("DHT22 ERROR");
     }
-    
-    delay(2000); // Leer cada 2 segundos
+    Serial.println("---------------------------------------");
 }

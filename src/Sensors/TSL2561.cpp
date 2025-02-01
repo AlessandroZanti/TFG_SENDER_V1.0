@@ -2,6 +2,8 @@
 
 Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); // Dirección por defecto (0x39)
 
+float TSL2561_Lux;
+
 void TSL2561_Setup() {
   // Inicializar la comunicación serial
   Serial.println("Iniciando TSL2561...");
@@ -21,18 +23,25 @@ void TSL2561_Setup() {
 }
 
 void TSL2561_Get() {
-  // Crear un objeto para almacenar los datos del sensor
+
   sensors_event_t event;
   tsl.getEvent(&event);
 
-  // Verificar si se obtuvieron lecturas válidas
   if (event.light) {
+    TSL2561_Lux = event.light;  // Guardar la lectura en la variable global
+  } else {
+    TSL2561_Lux = -1;  // Usamos -1 para indicar error o sensor saturado
+  }
+}
+
+void TSL2561_Print(){
+  Serial.println("---------------------------------------");
+  if (TSL2561_Lux >= 0) {
     Serial.print("Luz detectada: ");
-    Serial.print(event.light);
+    Serial.print(TSL2561_Lux);
     Serial.println(" lux");
   } else {
     Serial.println("No se detectó luz (el sensor puede estar saturado o apagado).");
   }
-
-  delay(1000); // Leer cada segundo
+  Serial.println("---------------------------------------");
 }

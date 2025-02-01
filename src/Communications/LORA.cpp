@@ -34,7 +34,9 @@ void ESP32_Setup(){
 }
 
 
-void LORA_Send(String data){ //? If ralla cambiar sin String y hacerse una raya
+void LORA_Send(){ //? If ralla cambiar sin String y hacerse una raya
+  Serial.println("---------------------------------------");
+  Serial.println("---------------------------------------");
   Serial.print("Enviando paquete: ");
   Serial.println(counter);
 
@@ -54,5 +56,6 @@ void LORA_Send(String data){ //? If ralla cambiar sin String y hacerse una raya
   delay(500);
     digitalWrite(PINLED, LOW); // Apaga el LED
   counter++;
+  Serial.println("---------------------------------------");
   delay(6000); // Espera 10 segundos antes de enviar el siguiente paquete
 }

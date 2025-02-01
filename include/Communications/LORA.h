@@ -23,7 +23,7 @@
 //TODO Add Funciones de LoRa
 
 void ESP32_Setup();
-void LoRaSend(String data); //? If ralla cambiar sin String y hacerse una raya
+void LORA_Send(); //? If ralla cambiar sin String y hacerse una raya
 
 
 #endif

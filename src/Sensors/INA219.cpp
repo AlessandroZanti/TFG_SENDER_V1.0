@@ -2,6 +2,11 @@
 
 Adafruit_INA219 ina219;
 
+float busVoltage;
+float shuntVoltage;
+float current_mA;
+float power_mW;
+
 void INA219_Setup() {
   Serial.println("Inicializando INA219...");
 
@@ -21,17 +26,17 @@ void INA219_Setup() {
 
 void INA219_Get() {
   // Leer mediciones del INA219
-  float busVoltage = ina219.getBusVoltage_V();       // Voltaje del panel solar
-  float shuntVoltage = ina219.getShuntVoltage_mV();  // Caída de voltaje en el shunt
-  float current_mA = ina219.getCurrent_mA();         // Corriente hacia la carga
-  float power_mW = ina219.getPower_mW();             // Potencia generada
+  busVoltage = ina219.getBusVoltage_V();       // Voltaje del panel solar
+  shuntVoltage = ina219.getShuntVoltage_mV();  // Caída de voltaje en el shunt
+  current_mA = ina219.getCurrent_mA();         // Corriente hacia la carga
+  power_mW = ina219.getPower_mW();             // Potencia generada
+}
 
-  // Mostrar resultados en el monitor serie
+void INA219_Print(){
+  Serial.println("---------------------------------------");
   Serial.print("Voltaje del panel solar: "); Serial.print(busVoltage); Serial.println(" V");
   Serial.print("Caída de voltaje en el shunt: "); Serial.print(shuntVoltage); Serial.println(" mV");
   Serial.print("Corriente hacia la carga: "); Serial.print(current_mA); Serial.println(" mA");
   Serial.print("Potencia generada: "); Serial.print(power_mW); Serial.println(" mW");
   Serial.println("---------------------------------------");
-
-  delay(1000); // Leer datos cada segundo
 }

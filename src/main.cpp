@@ -16,4 +16,9 @@ void loop() {
     ENS160AHT21_Get();
     INA219_Get();
     TSL2561_Get();
+    DHT22_Print();
+    ENS160AHT21_Print();
+    INA219_Print();
+    TSL2561_Print();
+    LORA_Send();
 }

@@ -4,9 +4,10 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_TSL2561_U.h>
 
-// Crear un objeto para el sensor TSL2561
+extern float TSL2561_Lux;
 
 void TSL2561_Setup();
 void TSL2561_Get();
+void TSL2561_Print();
 
 #endif
