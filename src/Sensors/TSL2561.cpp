@@ -36,6 +36,7 @@ void TSL2561_Get() {
 
 void TSL2561_Print(){
   Serial.println("---------------------------------------");
+  Serial.println("                TSL2561                ");
   if (TSL2561_Lux >= 0) {
     Serial.print("Luz detectada: ");
     Serial.print(TSL2561_Lux);

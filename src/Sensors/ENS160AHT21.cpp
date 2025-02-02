@@ -53,6 +53,7 @@ void ENS160AHT21_Get() {
 
 void ENS160AHT21_Print(){
   Serial.println("---------------------------------------");
+  Serial.println("            ENS160 + AHT21             ");
   Serial.print("Temp: "); Serial.print(TempC); Serial.println("°C\t");
   Serial.print("Humidity: "); Serial.println(Humidity); 
   Serial.print("AQI: ");Serial.print(Aqi);Serial.println("\t");

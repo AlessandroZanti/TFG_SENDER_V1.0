@@ -16,6 +16,7 @@ void DHT22_Get() {
 
 void DHT22_Print(){
     Serial.println("---------------------------------------");
+    Serial.println("                 DHT22                 ");
      if (!isnan(DH22_Temp) && !isnan(DHT22_Hum)) {
         Serial.print("Temperatura: ");
         Serial.print(DH22_Temp);

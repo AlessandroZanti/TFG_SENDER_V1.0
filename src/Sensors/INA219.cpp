@@ -34,6 +34,7 @@ void INA219_Get() {
 
 void INA219_Print(){
   Serial.println("---------------------------------------");
+  Serial.println("                INA219                 ");
   Serial.print("Voltaje del panel solar: "); Serial.print(busVoltage); Serial.println(" V");
   Serial.print("Caída de voltaje en el shunt: "); Serial.print(shuntVoltage); Serial.println(" mV");
   Serial.print("Corriente hacia la carga: "); Serial.print(current_mA); Serial.println(" mA");
