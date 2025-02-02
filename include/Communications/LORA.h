@@ -4,6 +4,7 @@
 #include <RadioLib.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <WiFi.h>
 
 // Define los pines del módulo LoRa //! Define los pines del módulo LoRa
 #define NSS 8     // Pin NSS (Chip Select)

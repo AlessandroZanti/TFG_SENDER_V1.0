@@ -1,8 +1,16 @@
 #include "Communications/LORA.h"
+#include "Sensors/DHT22.h"
+#include "Sensors/ENS160AHT21.h"
+#include "Sensors/INA219.h"
+#include "Sensors/TSL2561.h"
 
 SX1262 lora = new Module(NSS, DIO1, RST, BUSY);
 
 int counter = 0;
+
+String LoRa_Device = "Panel 1";
+String LoRa_MAC = WiFi.macAddress();
+
 
 void ESP32_Setup(){
 // Inicializa el monitor serie
@@ -34,28 +42,49 @@ void ESP32_Setup(){
 }
 
 
-void LORA_Send(){ //? If ralla cambiar sin String y hacerse una raya
+void LORA_Send(){
   Serial.println("---------------------------------------");
   Serial.println("---------------------------------------");
-  Serial.print("Enviando paquete: ");
+  Serial.print("Enviando paquetes: ");
   Serial.println(counter);
 
-  // Envía un paquete LoRa
-  String message = "hello " + String(counter);
-  int state = lora.transmit(message);
+  // Envía el primer paquete LoRa
+  String message1 = "Dispositivo:" + String(LoRa_Device) + "   MAC:" + String(LoRa_MAC) + 
+                    "   Sensor: DHT22" + "   Temperatura:" + String(DHT22_Temp) + 
+                    "   Humedad:" + String(DHT22_Hum) + "   Sensor: ENS160 + AHT21" + 
+                    "   Temperatura:" + String(TempC) + "   Humedad:" + String(Humidity) + 
+                    "Co2" + String(Eco2) + "TVOC" + String(Tvoc);
 
-  // Verifica el estado del envío
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje enviado con éxito.");
+  int state1 = lora.transmit(message1);
+  delay(100);  // Pequeña pausa entre los dos envíos
+
+  // Envía el segundo paquete LoRa
+  String message2 = String("   Sensor: INA219") + "   Corriente:" + String(current_mA) + 
+                    "   Voltaje:" + String(busVoltage) + "   Potencia:" + String(power_mW) + 
+                    "   ShuntVoltaje:" + String(shuntVoltage) + "   Sensor: TSL2591" + 
+                    "   Luz:" + String(TSL2561_Lux);
+
+  int state2 = lora.transmit(message2);
+
+  // Verifica el estado de los envíos
+  if (state1 == RADIOLIB_ERR_NONE && state2 == RADIOLIB_ERR_NONE) {
+    Serial.println("Ambos mensajes enviados con éxito.");
     digitalWrite(PINLED, HIGH); // Enciende el LED
   } else {
-    Serial.print("Error al enviar el mensaje, código: ");
-    digitalWrite(PINLED, HIGH);
-    Serial.println(state);
+    Serial.print("Error al enviar los mensajes, código de estado: ");
+    if (state1 != RADIOLIB_ERR_NONE) {
+      Serial.print("state1: ");
+      Serial.println(state1);
+    }
+    if (state2 != RADIOLIB_ERR_NONE) {
+      Serial.print("state2: ");
+      Serial.println(state2);
+    }
+    digitalWrite(PINLED, HIGH); // Enciende el LED en caso de error
   }
-  delay(500);
-    digitalWrite(PINLED, LOW); // Apaga el LED
+
+  digitalWrite(PINLED, LOW); // Apaga el LED
   counter++;
   Serial.println("---------------------------------------");
-  delay(6000); // Espera 10 segundos antes de enviar el siguiente paquete
+  delay(6000); // Espera antes de enviar el siguiente paquete
 }
