@@ -20,5 +20,6 @@ void loop() {
     ENS160AHT21_Print();
     INA219_Print();
     TSL2561_Print();
+    delay(5000); // Espera antes de enviar el siguiente paquete
     LORA_Send();
 }

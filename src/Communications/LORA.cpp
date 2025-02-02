@@ -11,9 +11,8 @@ int counter = 0;
 String LoRa_Device = "Panel 1";
 String LoRa_MAC = WiFi.macAddress();
 
-
 void ESP32_Setup(){
-// Inicializa el monitor serie
+  // Inicializa el monitor serie
   Serial.begin(115200);
 
   // Inicializar el bus I2C con pines personalizados
@@ -23,7 +22,7 @@ void ESP32_Setup(){
   while (!Serial);
   Serial.println("Inicializando LoRa...");
   digitalWrite(PINLED, HIGH);
-  delay(1000);
+  delay(2000);
 
   // Inicializa el módulo LoRa con una frecuencia de 868 MHz
   int state = lora.begin(frequency);
@@ -38,7 +37,7 @@ void ESP32_Setup(){
   lora.setSyncWord(syncWord);
   Serial.println("LoRa inicializado correctamente.");
   digitalWrite(PINLED, LOW);
-  delay(500);
+  delay(1000);
 }
 
 
@@ -51,24 +50,35 @@ void LORA_Send(){
   // Envía el primer paquete LoRa
   String message1 = "Dispositivo:" + String(LoRa_Device) + "   MAC:" + String(LoRa_MAC) + 
                     "   Sensor: DHT22" + "   Temperatura:" + String(DHT22_Temp) + 
-                    "   Humedad:" + String(DHT22_Hum) + "   Sensor: ENS160 + AHT21" + 
-                    "   Temperatura:" + String(TempC) + "   Humedad:" + String(Humidity) + 
-                    "Co2" + String(Eco2) + "TVOC" + String(Tvoc);
+                    "   Humedad:" + String(DHT22_Hum);
 
-  int state1 = lora.transmit(message1);
-  delay(100);  // Pequeña pausa entre los dos envíos
+  String message2 = String("Sensor: ENS160 + AHT21") + "   Temperatura:" + String(TempC) + 
+                    "   Humedad:" + String(Humidity) + "   Co2:" + String(Eco2) + 
+                    "   TVOC:" + String(Tvoc);
 
-  // Envía el segundo paquete LoRa
-  String message2 = String("   Sensor: INA219") + "   Corriente:" + String(current_mA) + 
+  String message3 = String("Sensor: INA219") + "   Corriente:" + String(current_mA) + 
                     "   Voltaje:" + String(busVoltage) + "   Potencia:" + String(power_mW) + 
-                    "   ShuntVoltaje:" + String(shuntVoltage) + "   Sensor: TSL2591" + 
-                    "   Luz:" + String(TSL2561_Lux);
+                    "   ShuntVoltaje:" + String(shuntVoltage);
+
+  String message4 = String("Sensor: TSL2591") + "   Luz:" + String(TSL2561_Lux);
+
+  // Enviar los mensajes
+  int state1 = lora.transmit(message1);
+  delay(100);
 
   int state2 = lora.transmit(message2);
+  delay(100);
+
+  int state3 = lora.transmit(message3);
+  delay(100);
+
+  int state4 = lora.transmit(message4);
+  delay(100);
 
   // Verifica el estado de los envíos
-  if (state1 == RADIOLIB_ERR_NONE && state2 == RADIOLIB_ERR_NONE) {
-    Serial.println("Ambos mensajes enviados con éxito.");
+  if (state1 == RADIOLIB_ERR_NONE && state2 == RADIOLIB_ERR_NONE && 
+      state3 == RADIOLIB_ERR_NONE && state4 == RADIOLIB_ERR_NONE) {
+    Serial.println("Mensajes enviados con éxito.");
     digitalWrite(PINLED, HIGH); // Enciende el LED
   } else {
     Serial.print("Error al enviar los mensajes, código de estado: ");
@@ -80,11 +90,18 @@ void LORA_Send(){
       Serial.print("state2: ");
       Serial.println(state2);
     }
+    if (state3 != RADIOLIB_ERR_NONE) {
+      Serial.print("state3: ");
+      Serial.println(state3);
+    }
+    if (state4 != RADIOLIB_ERR_NONE) {
+      Serial.print("state4: ");
+      Serial.println(state4);
+    }
     digitalWrite(PINLED, HIGH); // Enciende el LED en caso de error
   }
-
+  delay(600);
   digitalWrite(PINLED, LOW); // Apaga el LED
   counter++;
   Serial.println("---------------------------------------");
-  delay(6000); // Espera antes de enviar el siguiente paquete
 }
