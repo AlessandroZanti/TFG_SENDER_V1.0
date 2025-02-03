@@ -8,7 +8,7 @@ SX1262 lora = new Module(NSS, DIO1, RST, BUSY);
 
 int counter = 0;
 
-String LoRa_Device = "Panel 1";
+String LoRa_Device = "Panel 1" ;
 String LoRa_MAC = WiFi.macAddress();
 
 void ESP32_Setup(){
@@ -48,9 +48,10 @@ void LORA_Send(){
   Serial.println(counter);
 
   // Envía el primer paquete LoRa
-  String message1 = "Dispositivo:" + String(LoRa_Device) + "   MAC:" + String(LoRa_MAC) + 
-                    "   Sensor: DHT22" + "   Temperatura:" + String(DHT22_Temp) + 
-                    "   Humedad:" + String(DHT22_Hum);
+  String message1 = "   D:" + String(LoRa_Device)  + String(LoRa_MAC) + 
+                    "   S : DHT22" +
+                    "   T:" + String(DHT22_Temp) + 
+                    "   H:" + String(DHT22_Hum);
 
   int state1 = lora.transmit(message1);
 
@@ -70,8 +71,10 @@ void LORA_Send(){
     }
   }
 
-  String message2 = String("Sensor: ENS160 + AHT21") + "   Temperatura:" + String(TempC) + 
-                    "   Humedad:" + String(Humidity) + "   Co2:" + String(Eco2) + 
+  String message2 = String("S: ENS160 + AHT21") + 
+                    "   T:" + String(TempC) + 
+                    "   H:" + String(Humidity) + 
+                    "   Co2:" + String(Eco2) + 
                     "   TVOC:" + String(Tvoc);
 
   int state2 = lora.transmit(message2);
@@ -92,9 +95,11 @@ void LORA_Send(){
     }
   }
 
-  String message3 = String("Sensor: INA219") + "   Corriente:" + String(current_mA) + 
-                    "   Voltaje:" + String(busVoltage) + "   Potencia:" + String(power_mW) + 
-                    "   ShuntVoltaje:" + String(shuntVoltage);
+  String message3 = String("Sensor: INA219") +
+                    "   I:" + String(current_mA) + 
+                    "   V:" + String(busVoltage) +
+                    "   P:" + String(power_mW) + 
+                    "   SV:" + String(shuntVoltage);
 
   int state3 = lora.transmit(message3);
 
@@ -114,10 +119,11 @@ void LORA_Send(){
     }
   }
 
-  String message4 = String("Sensor: TSL2591") + "   Luz:" + String(TSL2561_Lux);
+  String message4 = String("S: TSL2591") + 
+                    "   L:" + String(TSL2561_Lux);
  
   int state4 = lora.transmit(message4);
-  
+
   digitalWrite(PINLED, HIGH); // Enciende el LED
   delay(2500);
   digitalWrite(PINLED, LOW); // Enciende el LED
