@@ -44,102 +44,98 @@ void ESP32_Setup(){
 void LORA_Send(){
   Serial.println("---------------------------------------");
   Serial.println("---------------------------------------");
-  Serial.print("Enviando paquetes: ");
+  Serial.print("Enviando paquete: ");
   Serial.println(counter);
 
-  // Envía el primer paquete LoRa
-  String message1 = "   D:" + String(LoRa_Device)  + String(LoRa_MAC) + 
-                    "   S : DHT22" +
-                    "   T:" + String(DHT22_Temp) + 
-                    "   H:" + String(DHT22_Hum);
+  /*String message = "hello " + String(counter);
+  int state = lora.transmit(message);*/
 
+  String message1 =  String(LoRa_Device)  + String(LoRa_MAC);
   int state1 = lora.transmit(message1);
 
-  digitalWrite(PINLED, HIGH); // Enciende el LED
-  delay(2500);
-  digitalWrite(PINLED, LOW); // Enciende el LED
-  delay(2500);
-
-  if (state1 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 1 enviado con éxito.");
+if (state1 == RADIOLIB_ERR_NONE) {
+    Serial.println("Mensaje 1: LoRa enviado con éxito.");
     digitalWrite(PINLED, HIGH); // Enciende el LED
+    delay(1000);
+    digitalWrite(PINLED, LOW); // Enciende el LED
+    delay(1000);
   } else {
-    Serial.print("Error al enviar los mensajes, código de estado: ");
-    if (state1 != RADIOLIB_ERR_NONE) {
-      Serial.print("state1: ");
-      Serial.println(state1);
-    }
+    Serial.print("Error al enviar el mensaje 1, código: ");
+    digitalWrite(PINLED, HIGH);
+    Serial.println(state1);
   }
 
-  String message2 = String("S: ENS160 + AHT21") + 
-                    "   T:" + String(TempC) + 
-                    "   H:" + String(Humidity) + 
-                    "   Co2:" + String(Eco2) + 
-                    "   TVOC:" + String(Tvoc);
 
+delay(100);
+
+  String message2 =  String(DHT22_Temp)  + String(DHT22_Hum);
   int state2 = lora.transmit(message2);
 
-  digitalWrite(PINLED, HIGH); // Enciende el LED
-  delay(2500);
-  digitalWrite(PINLED, LOW); // Enciende el LED
-  delay(2500);
-
-  if (state2 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 2 enviado con éxito.");
+if (state2 == RADIOLIB_ERR_NONE) {
+    Serial.println("Mensaje 2: DHT22 enviado con éxito.");
     digitalWrite(PINLED, HIGH); // Enciende el LED
+    delay(1000);
+    digitalWrite(PINLED, LOW); // Enciende el LED
+    delay(1000);
   } else {
-    Serial.print("Error al enviar los mensajes, código de estado: ");
-    if (state2 != RADIOLIB_ERR_NONE) {
-      Serial.print("state2: ");
-      Serial.println(state2);
-    }
+    Serial.print("Error al enviar el mensaje 2, código: ");
+    digitalWrite(PINLED, HIGH);
+    Serial.println(state2);
   }
 
-  String message3 = String("Sensor: INA219") +
-                    "   I:" + String(current_mA) + 
-                    "   V:" + String(busVoltage) +
-                    "   P:" + String(power_mW) + 
-                    "   SV:" + String(shuntVoltage);
+delay(100);
 
+String message3 =  String(current_mA)  + String(busVoltage) + String(power_mW) + String(shuntVoltage);
   int state3 = lora.transmit(message3);
 
-  digitalWrite(PINLED, HIGH); // Enciende el LED
-  delay(2500);
-  digitalWrite(PINLED, LOW); // Enciende el LED
-  delay(2500);
-
-  if (state2 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 3 enviado con éxito.");
+if (state3 == RADIOLIB_ERR_NONE) {
+    Serial.println("Mensaje 3: ENS160 + AHT21 enviado con éxito.");
     digitalWrite(PINLED, HIGH); // Enciende el LED
+    delay(1000);
+    digitalWrite(PINLED, LOW); // Enciende el LED
+    delay(1000);
   } else {
-    Serial.print("Error al enviar los mensajes, código de estado: ");
-    if (state3 != RADIOLIB_ERR_NONE) {
-      Serial.print("state3: ");
-      Serial.println(state3);
-    }
+    Serial.print("Error al enviar el mensaje 3, código: ");
+    digitalWrite(PINLED, HIGH);
+    Serial.println(state3);
   }
 
-  String message4 = String("S: TSL2591") + 
-                    "   L:" + String(TSL2561_Lux);
- 
+delay(100);
+  
+  String message4 =  String(current_mA)  + String(busVoltage) + String(power_mW) + String(shuntVoltage);
   int state4 = lora.transmit(message4);
 
-  digitalWrite(PINLED, HIGH); // Enciende el LED
-  delay(2500);
-  digitalWrite(PINLED, LOW); // Enciende el LED
-  delay(2500);
-
-  if (state4 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 4 enviado con éxito.");
+if (state4 == RADIOLIB_ERR_NONE) {
+    Serial.println("Mensaje 4: INA219 enviado con éxito.");
     digitalWrite(PINLED, HIGH); // Enciende el LED
+    delay(1000);
+    digitalWrite(PINLED, LOW); // Enciende el LED
+    delay(1000);
   } else {
-    Serial.print("Error al enviar los mensajes, código de estado: ");
-    if (state4 != RADIOLIB_ERR_NONE) {
-      Serial.print("state4: ");
-      Serial.println(state4);
-      }
+    Serial.print("Error al enviar el mensaje 4, código: ");
+    digitalWrite(PINLED, HIGH);
+    Serial.println(state4);
   }
-  delay(600);
+
+  delay(100);
+
+  String message5 =  String(TSL2561_Lux);
+  int state5 = lora.transmit(message5);
+
+if (state5 == RADIOLIB_ERR_NONE) {
+    Serial.println("Mensaje 5: TSL2561 enviado con éxito.");
+    digitalWrite(PINLED, HIGH); // Enciende el LED
+    delay(1000);
+    digitalWrite(PINLED, LOW); // Enciende el LED
+    delay(1000);
+  } else {
+    Serial.print("Error al enviar el mensaje 5, código: ");
+    digitalWrite(PINLED, HIGH);
+    Serial.println(state5);
+  }
+
+delay(100);
+
   digitalWrite(PINLED, LOW); // Apaga el LED
   counter++;
   Serial.println("---------------------------------------");
