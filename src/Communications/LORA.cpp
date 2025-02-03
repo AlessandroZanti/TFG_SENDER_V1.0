@@ -64,16 +64,16 @@ void LORA_Send(){
 
   // Enviar los mensajes
   int state1 = lora.transmit(message1);
-  delay(100);
+  delay(5000);
 
   int state2 = lora.transmit(message2);
-  delay(100);
+  delay(5000);
 
   int state3 = lora.transmit(message3);
-  delay(100);
+  delay(5000);
 
   int state4 = lora.transmit(message4);
-  delay(100);
+  delay(5000);
 
   // Verifica el estado de los envíos
   if (state1 == RADIOLIB_ERR_NONE && state2 == RADIOLIB_ERR_NONE && 

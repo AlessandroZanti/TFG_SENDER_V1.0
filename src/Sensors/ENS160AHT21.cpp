@@ -61,3 +61,11 @@ void ENS160AHT21_Print(){
   Serial.print("CO2: ");Serial.print(Eco2);Serial.println("ppm\t");
   Serial.println("---------------------------------------");
 }
+
+void ENS160AHT21_Simu(){
+    Humidity = 30.5;
+    TempC = 50.5;
+    Tvoc = 500;
+    Eco2 = 400;
+    Aqi = 1;
+}

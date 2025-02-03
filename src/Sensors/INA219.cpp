@@ -41,3 +41,10 @@ void INA219_Print(){
   Serial.print("Potencia generada: "); Serial.print(power_mW); Serial.println(" mW");
   Serial.println("---------------------------------------");
 }
+
+void INA219_Simu(){
+  busVoltage = 9.5;
+  shuntVoltage = 2.5;
+  current_mA = 2.5;
+  power_mW = 50;
+}

@@ -14,5 +14,6 @@ extern float DHT22_Hum;
 void DHT22_Setup();
 void DHT22_Get();
 void DHT22_Print();
+void DHT22_Simu();
 
 #endif

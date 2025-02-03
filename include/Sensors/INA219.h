@@ -12,5 +12,6 @@ extern float power_mW;
 void INA219_Setup();
 void INA219_Get();
 void INA219_Print();
+void INA219_Simu();
 
 #endif

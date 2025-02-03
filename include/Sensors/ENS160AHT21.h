@@ -15,5 +15,6 @@ extern int Aqi;
 void ENS160AHT21_Setup();
 void ENS160AHT21_Get();
 void ENS160AHT21_Print();
+void ENS160AHT21_Simu();
 
 #endif

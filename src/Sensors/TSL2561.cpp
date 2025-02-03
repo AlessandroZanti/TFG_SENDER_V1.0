@@ -46,3 +46,7 @@ void TSL2561_Print(){
   }
   Serial.println("---------------------------------------");
 }
+
+void TSL2561_Simu(){
+  TSL2561_Lux = 5000;
+}

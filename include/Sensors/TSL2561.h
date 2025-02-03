@@ -9,5 +9,6 @@ extern float TSL2561_Lux;
 void TSL2561_Setup();
 void TSL2561_Get();
 void TSL2561_Print();
+void TSL2561_Simu();
 
 #endif

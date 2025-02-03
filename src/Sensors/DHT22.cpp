@@ -28,3 +28,8 @@ void DHT22_Print(){
     }
     Serial.println("---------------------------------------");
 }
+
+void DHT22_Simu(){
+    DHT22_Temp = 30.5;
+    DHT22_Hum = 50.5;
+}
