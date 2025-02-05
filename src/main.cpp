@@ -25,5 +25,8 @@ void loop() {
     INA219_Print();
     TSL2561_Print();
     //delay(5000); // Espera antes de enviar el siguiente paquete
-    LORA_Send();
+    //LORA_Send();
+    delay(2500);
+    LORA_Send_2();
+    delay(2500);
 }

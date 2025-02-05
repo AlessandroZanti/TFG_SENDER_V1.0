@@ -4,6 +4,10 @@
 #include "Sensors/INA219.h"
 #include "Sensors/TSL2561.h"
 
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
+
 SX1262 lora = new Module(NSS, DIO1, RST, BUSY);
 
 int counter = 0;
@@ -37,106 +41,47 @@ void ESP32_Setup(){
   lora.setSyncWord(syncWord);
   Serial.println("LoRa inicializado correctamente.");
   digitalWrite(PINLED, LOW);
+  lora.finishTransmit();
   delay(1000);
 }
 
+void LORA_Send_2(){
 
-void LORA_Send(){
+  String mensaje = "Hola puto munto"  + String(counter);
+  lora.startTransmit(mensaje);
+  delay(100);
   Serial.println("---------------------------------------");
   Serial.println("---------------------------------------");
   Serial.print("Enviando paquete: ");
   Serial.println(counter);
+   //lora.transmit(mensaje);
+    if (lora.startTransmit(mensaje) == RADIOLIB_ERR_NONE) {
+    // the packet was successfully transmitted
+    Serial.println(F("success!"));
 
-  /*String message = "hello " + String(counter);
-  int state = lora.transmit(message);*/
+    // print measured data rate
+    Serial.print(F("[SX1262] Datarate:\t"));
+    Serial.print(lora.getDataRate());
+    Serial.println(F(" bps"));
 
-  String message1 =  String(LoRa_Device)  + String(LoRa_MAC);
-  int state1 = lora.transmit(message1);
+  } else if (lora.startTransmit(mensaje) == RADIOLIB_ERR_PACKET_TOO_LONG) {
+    // the supplied packet was longer than 256 bytes
+    Serial.println(F("too long!"));
 
-if (state1 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 1: LoRa enviado con éxito.");
-    digitalWrite(PINLED, HIGH); // Enciende el LED
-    delay(1000);
-    digitalWrite(PINLED, LOW); // Enciende el LED
-    delay(1000);
+  } else if (lora.startTransmit(mensaje) == RADIOLIB_ERR_TX_TIMEOUT) {
+    // timeout occured while transmitting packet
+    Serial.println(F("timeout!"));
+
   } else {
-    Serial.print("Error al enviar el mensaje 1, código: ");
-    digitalWrite(PINLED, HIGH);
-    Serial.println(state1);
+    // some other error occurred
+    Serial.print(F("failed, code "));
+    Serial.println(lora.startTransmit(mensaje));
   }
-
-
-delay(100);
-
-  String message2 =  String(DHT22_Temp)  + String(DHT22_Hum);
-  int state2 = lora.transmit(message2);
-
-if (state2 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 2: DHT22 enviado con éxito.");
-    digitalWrite(PINLED, HIGH); // Enciende el LED
-    delay(1000);
-    digitalWrite(PINLED, LOW); // Enciende el LED
-    delay(1000);
-  } else {
-    Serial.print("Error al enviar el mensaje 2, código: ");
-    digitalWrite(PINLED, HIGH);
-    Serial.println(state2);
-  }
-
-delay(100);
-
-String message3 =  String(current_mA)  + String(busVoltage) + String(power_mW) + String(shuntVoltage);
-  int state3 = lora.transmit(message3);
-
-if (state3 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 3: ENS160 + AHT21 enviado con éxito.");
-    digitalWrite(PINLED, HIGH); // Enciende el LED
-    delay(1000);
-    digitalWrite(PINLED, LOW); // Enciende el LED
-    delay(1000);
-  } else {
-    Serial.print("Error al enviar el mensaje 3, código: ");
-    digitalWrite(PINLED, HIGH);
-    Serial.println(state3);
-  }
-
-delay(100);
-  
-  String message4 =  String(current_mA)  + String(busVoltage) + String(power_mW) + String(shuntVoltage);
-  int state4 = lora.transmit(message4);
-
-if (state4 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 4: INA219 enviado con éxito.");
-    digitalWrite(PINLED, HIGH); // Enciende el LED
-    delay(1000);
-    digitalWrite(PINLED, LOW); // Enciende el LED
-    delay(1000);
-  } else {
-    Serial.print("Error al enviar el mensaje 4, código: ");
-    digitalWrite(PINLED, HIGH);
-    Serial.println(state4);
-  }
-
-  delay(100);
-
-  String message5 =  String(TSL2561_Lux);
-  int state5 = lora.transmit(message5);
-
-if (state5 == RADIOLIB_ERR_NONE) {
-    Serial.println("Mensaje 5: TSL2561 enviado con éxito.");
-    digitalWrite(PINLED, HIGH); // Enciende el LED
-    delay(1000);
-    digitalWrite(PINLED, LOW); // Enciende el LED
-    delay(1000);
-  } else {
-    Serial.print("Error al enviar el mensaje 5, código: ");
-    digitalWrite(PINLED, HIGH);
-    Serial.println(state5);
-  }
-
-delay(100);
 
   digitalWrite(PINLED, LOW); // Apaga el LED
   counter++;
   Serial.println("---------------------------------------");
+  // wait for a second before transmitting again
+  delay(100);
+  lora.finishTransmit();
 }

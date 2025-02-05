@@ -25,7 +25,7 @@
 
 void ESP32_Setup();
 void LORA_Send(); //? If ralla cambiar sin String y hacerse una raya
-
+void LORA_Send_2();
 
 #endif
 
