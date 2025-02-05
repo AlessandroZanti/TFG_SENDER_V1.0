@@ -5,6 +5,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <WiFi.h>
+#include <ArduinoJson.h>
 
 // Define los pines del módulo LoRa //! Define los pines del módulo LoRa
 #define NSS 8     // Pin NSS (Chip Select)
@@ -18,14 +19,24 @@
 
 #define PINLED 35 // Pin del LED
 
-#define frequency 900.0 // Frecuencia de operación en MHz
+#define frequency 870.0 // Frecuencia de operación en MHz
+#define bitrate 250.0 // Bitrate en kbps
+#define power 12 // Potencia de transmisión en dBm
+#define spreadFactor 8 // Factor de esparcimiento
 #define syncWord 0xA1 // Sync Word
+#define bandwidth 22 // Ancho de banda en kHz
+#define codingRate 12 // Tasa de codificación
+
+
+extern volatile bool transmitted_flag;  // Flag indicating if transmission is complete
+extern int transmission_state;          // Stores the transmission status
 
 //TODO Add Funciones de LoRa
 
 void ESP32_Setup();
-void LORA_Send(); //? If ralla cambiar sin String y hacerse una raya
-void LORA_Send_2();
+void LORA_Send(JsonDocument& doc);
+void get_all_data(JsonDocument& doc);
+void check_transmission_status();
 
 #endif
 
