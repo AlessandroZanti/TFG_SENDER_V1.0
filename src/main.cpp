@@ -26,7 +26,7 @@ void loop() {
     TSL2561_Print();
     //delay(5000); // Espera antes de enviar el siguiente paquete
     //LORA_Send();
-    StaticJsonDocument<512> doc;
+    StaticJsonDocument<256> doc;
     get_all_data(doc);
     delay(2500);
     LORA_Send(doc);

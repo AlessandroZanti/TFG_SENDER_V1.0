@@ -38,9 +38,11 @@ void ESP32_Setup(){
   pinMode(PINLED, OUTPUT);
   while (!Serial);
   Serial.println("Inicializando LoRa...");
-  digitalWrite(PINLED, HIGH);
-  delay(2000);
-
+   for(int ini = 7; ini > 0; ini--){
+    digitalWrite(PINLED, HIGH);
+    delay(250);
+    digitalWrite(PINLED,LOW);
+  }
   // Inicializa el módulo LoRa con una frecuencia de 868 MHz
   int state = lora.begin(frequency, bitrate, power, spreadFactor, syncWord, bandwidth, codingRate);
   if (state != RADIOLIB_ERR_NONE) {
@@ -69,31 +71,30 @@ void get_all_data(JsonDocument& doc){
 
   // Agregar el primer sensor (DHT22)
   JsonObject dht22 = sensors.createNestedObject();
-  dht22["Sensor"] = "DHT22";
-  dht22["Temperature"] = DHT22_Temp;
-  dht22["Humidity"] = DHT22_Hum;
+  dht22["1º"] = "DHT22";
+  dht22["Temp"] = DHT22_Temp;
+  dht22["Hum"] = DHT22_Hum;
 
   // Agregar el segundo sensor (ENS160AHT21)
   JsonObject ens160aht21 = sensors.createNestedObject();
-  ens160aht21["Sensor"] = "ENS160AHT21";
-  ens160aht21["Temperature"] = TempC;
-  ens160aht21["Humidity"] = Humidity;
+  ens160aht21["2º"] = "ENS160 + AHT21";
+  ens160aht21["Temp"] = TempC;
+  ens160aht21["Hum"] = Humidity;
   ens160aht21["Tvoc"] = Tvoc;
   ens160aht21["Eco2"] = Eco2;
 
   // Agregar el tercer sensor (INA219)
   JsonObject ina219 = sensors.createNestedObject();
-  ina219["Sensor"] = "INA219";
-  ina219["Current"] = current_mA;
-  ina219["Voltage"] = busVoltage;
-  ina219["Power"] = power_mW;
-  ina219["ShuntVoltage"] = shuntVoltage;
+  ina219["3º"] = "INA219";
+  ina219["I"] = current_mA;
+  ina219["V"] = busVoltage;
+  ina219["P"] = power_mW;
+  ina219["SV"] = shuntVoltage;
 
   // Agregar el cuarto sensor (TSL2561)
   JsonObject tsl2561 = sensors.createNestedObject();
-  tsl2561["Sensor"] = "TSL2561";
-  tsl2561["Luminosity"] = TSL2561_Lux;
-
+  tsl2561["4º"] = "TSL2561";
+  tsl2561["Lum"] = TSL2561_Lux;
   // Envia el objeto JSON
   LORA_Send(doc);
 }
