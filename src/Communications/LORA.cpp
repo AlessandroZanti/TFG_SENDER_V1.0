@@ -18,6 +18,7 @@ int transmission_state = RADIOLIB_ERR_NONE;  // Variable to store transmission s
 #if defined(ESP8266) || defined(ESP32)
 ICACHE_RAM_ATTR
 #endif
+
 void set_transmitted_flag() {
     transmitted_flag = true;  // Set the flag to true when transmission is done
 }
@@ -38,10 +39,11 @@ void ESP32_Setup(){
   pinMode(PINLED, OUTPUT);
   while (!Serial);
   Serial.println("Inicializando LoRa...");
-   for(int ini = 7; ini > 0; ini--){
+   for(int N = 0; N < 6; N++){
     digitalWrite(PINLED, HIGH);
     delay(250);
     digitalWrite(PINLED,LOW);
+    delay(250);
   }
   // Inicializa el módulo LoRa con una frecuencia de 868 MHz
   int state = lora.begin(frequency, bitrate, power, spreadFactor, syncWord, bandwidth, codingRate);
@@ -57,6 +59,10 @@ void ESP32_Setup(){
   // Configura el Sync Word para asegurar comunicación entre dispositivos
   //lora.setSyncWord(syncWord);
   Serial.println("LoRa inicializado correctamente.");
+  Serial.print("Device: ");
+  Serial.println(LoRa_Device);
+  Serial.print("MAC: "); 
+  Serial.println(LoRa_MAC);
   digitalWrite(PINLED, LOW);
   lora.finishTransmit();
   delay(1000);
@@ -95,10 +101,10 @@ void get_all_data(JsonDocument& doc){
   JsonObject tsl2561 = sensors.createNestedObject();
   tsl2561["4º"] = "TSL2561";
   tsl2561["Lum"] = TSL2561_Lux;
-  // Envia el objeto JSON
-  LORA_Send(doc);
+  // ? si da problemas al enviar, llamar otra vez a la funcion LORA_Send para enviar 2 veces.
 }
-  // Envia el objet
+
+  // Envia el paquete
 void LORA_Send(JsonDocument& doc){
   String jsonString;
   serializeJson(doc, jsonString);  // Convert JSON document to a string
