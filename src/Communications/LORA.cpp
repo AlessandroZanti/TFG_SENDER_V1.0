@@ -53,7 +53,7 @@ void ESP32_Setup(){
     Serial.println(state);
     while (true); // Detén el programa si falla la inicialización
   }
-
+  attachInterrupt(digitalPinToInterrupt(DIO1), set_transmitted_flag, RISING);
   lora.setPacketSentAction(set_transmitted_flag);
 
   // Configura el Sync Word para asegurar comunicación entre dispositivos
@@ -114,8 +114,6 @@ void LORA_Send(JsonDocument& doc){
   Serial.print("JSON message size in bytes: ");
   Serial.println(jsonSize);
   // Turn LED on before starting transmission
-  digitalWrite(PINLED, HIGH);
-  delay(1000);
   Serial.println("---------------------------------------");
   Serial.println("---------------------------------------");
   Serial.print("Enviando paquete: ");
@@ -126,7 +124,7 @@ void LORA_Send(JsonDocument& doc){
         Serial.println("Message is being transmitted...");
     } else {
         // Turn LED off if transmission fails
-        digitalWrite(PINLED, LOW);
+        digitalWrite(PINLED, HIGH);
         delay(100);
 
         Serial.print("Error starting transmission, code: ");
@@ -140,6 +138,9 @@ void LORA_Send(JsonDocument& doc){
 
   void check_transmission_status() {
     Serial.println("Checking transmission status...");
+    Serial.print("FLAG before reset: ");
+    Serial.println(transmitted_flag);
+    delay (2500);
 
     if (transmitted_flag) {  // If transmission is complete
         transmitted_flag = false;  // Reset the flag
@@ -150,10 +151,8 @@ void LORA_Send(JsonDocument& doc){
             Serial.print("Transmission failed, code: ");
             Serial.println(transmission_state);
         }
-
         // Clean up after transmission
         lora.finishTransmit();
-
         // Visual indication using LED (blinks 3 times)
         for (int i = 0; i < 3; i++) {
             digitalWrite(PINLED, HIGH);
@@ -164,6 +163,5 @@ void LORA_Send(JsonDocument& doc){
     }
   digitalWrite(PINLED, LOW); // Apaga el LED
   Serial.println("---------------------------------------");
-  // wait for a second before transmitting again
-  delay(100);
+
 }

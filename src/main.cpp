@@ -12,7 +12,6 @@ void setup() {
 }
 
 void loop() {
-    set_transmitted_flag();
     //DHT22_Get();
     DHT22_Simu();
     //ENS160AHT21_Get();
@@ -29,7 +28,6 @@ void loop() {
     //LORA_Send();
     StaticJsonDocument<256> doc;
     get_all_data(doc);
-    delay(2500);
     LORA_Send(doc);
     delay(2500);
 }
