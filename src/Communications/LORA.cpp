@@ -72,35 +72,26 @@ void get_all_data(JsonDocument& doc){
   // Agrega los datos de los sensores al objeto JSON
   doc["D"] = LoRa_Device;
   doc["M"] = LoRa_MAC;
-   // Crear un array de sensores
-  JsonArray sensors = doc.createNestedArray("Sens");
 
   // Agregar el primer sensor (DHT22)
-  JsonObject dht22 = sensors.createNestedObject();
-  dht22["Sen"] = "DHT";
-  dht22["T"] = DHT22_Temp;
-  dht22["H"] = DHT22_Hum;
+
+  doc["1"]["T1"] = DHT22_Temp;
+  doc["1"]["H1"] = DHT22_Hum;
 
   // Agregar el segundo sensor (ENS160AHT21)
-  JsonObject ens160aht21 = sensors.createNestedObject();
-  ens160aht21["S"] = "ENS+AHT";
-  ens160aht21["T"] = TempC;
-  ens160aht21["H"] = Humidity;
-  ens160aht21["Tvoc"] = Tvoc;
-  ens160aht21["Eco2"] = Eco2;
+  doc["2"]["T2"] = TempC;
+  doc["2"]["H2"] = Humidity;
+  doc["2"]["Tvoc"] = Tvoc;
+  doc["2"]["Eco2"] = Eco2;
 
   // Agregar el tercer sensor (INA219)
-  JsonObject ina219 = sensors.createNestedObject();
-  ina219["Sen"] = "INA";
-  ina219["I"] = current_mA;
-  ina219["V"] = busVoltage;
-  ina219["P"] = power_mW;
-  ina219["SV"] = shuntVoltage;
+  doc["3"]["I"] = current_mA;
+  doc["3"]["V"] = busVoltage;
+  doc["3"]["P"] = power_mW;
+  doc["3"]["SV"] = shuntVoltage;
 
   // Agregar el cuarto sensor (TSL2561)
-  JsonObject tsl2561 = sensors.createNestedObject();
-  tsl2561["Sen"] = "TSL";
-  tsl2561["L"] = TSL2561_Lux;
+  doc["4"]["L"] = TSL2561_Lux;
   // ? si da problemas al enviar, llamar otra vez a la funcion LORA_Send para enviar 2 veces.
 }
 
