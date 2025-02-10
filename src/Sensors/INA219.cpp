@@ -39,7 +39,6 @@ void INA219_Print(){
   Serial.print("Caída de voltaje en el shunt: "); Serial.print(shuntVoltage); Serial.println(" mV");
   Serial.print("Corriente hacia la carga: "); Serial.print(current_mA); Serial.println(" mA");
   Serial.print("Potencia generada: "); Serial.print(power_mW); Serial.println(" mW");
-  Serial.println("---------------------------------------");
 }
 
 void INA219_Simu(){

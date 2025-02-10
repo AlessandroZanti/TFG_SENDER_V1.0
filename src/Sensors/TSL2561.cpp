@@ -44,7 +44,6 @@ void TSL2561_Print(){
   } else {
     Serial.println("No se detectó luz (el sensor puede estar saturado o apagado).");
   }
-  Serial.println("---------------------------------------");
 }
 
 void TSL2561_Simu(){

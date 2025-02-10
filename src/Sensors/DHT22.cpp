@@ -26,7 +26,6 @@ void DHT22_Print(){
     } else {
         Serial.println("DHT22 ERROR");
     }
-    Serial.println("---------------------------------------");
 }
 
 void DHT22_Simu(){

@@ -104,6 +104,7 @@ void LORA_Send(JsonDocument& doc){
   size_t jsonSize = measureJson(doc);
   Serial.print("JSON message size in bytes: ");
   Serial.println(jsonSize);
+
   // Turn LED on before starting transmission
   Serial.println("---------------------------------------");
   Serial.println("---------------------------------------");
@@ -113,6 +114,10 @@ void LORA_Send(JsonDocument& doc){
   transmission_state = lora.startTransmit(jsonString.c_str());   
     if (transmission_state == RADIOLIB_ERR_NONE) {
         Serial.println("Message is being transmitted...");
+        Serial.println("---------------------------------------");
+        Serial.println("Message: ");
+        Serial.println(jsonString);
+        Serial.println("---------------------------------------");
     } else {
         // Turn LED off if transmission fails
         digitalWrite(PINLED, HIGH);
@@ -133,8 +138,8 @@ void LORA_Send(JsonDocument& doc){
     int ledState = LOW;                // Estado actual del LED
     int blinkCount = 0;                // Contador de parpadeos
     Serial.println("Checking transmission status...");
-    Serial.print("FLAG before reset: ");
-    Serial.println(transmitted_flag);
+    //Serial.print("FLAG before reset: ");
+    //Serial.println(transmitted_flag);
     delay (2000); //!cambiar de nuevo a 2500 si problemas, como la mama de nickolasflowers
 
     if (transmitted_flag) {  // If transmission is complete

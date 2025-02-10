@@ -59,7 +59,6 @@ void ENS160AHT21_Print(){
   Serial.print("AQI: ");Serial.print(Aqi);Serial.println("\t");
   Serial.print("TVOC: ");Serial.print(Tvoc);Serial.println("ppb\t"); 
   Serial.print("CO2: ");Serial.print(Eco2);Serial.println("ppm\t");
-  Serial.println("---------------------------------------");
 }
 
 void ENS160AHT21_Simu(){
