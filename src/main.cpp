@@ -27,5 +27,5 @@ void loop() {
     StaticJsonDocument<256> doc;
     get_all_data(doc);
     LORA_Send(doc);
-    delay(1500); //! Cambiar a 2500 si problemas
+    delay(1000); //! Cambiar a 2500 si problemas
 }
