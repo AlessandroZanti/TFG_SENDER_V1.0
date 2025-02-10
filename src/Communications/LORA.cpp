@@ -108,12 +108,14 @@ void LORA_Send(JsonDocument& doc){
   // Turn LED on before starting transmission
   Serial.println("---------------------------------------");
   Serial.println("---------------------------------------");
-  Serial.print("Enviando paquete: ");
+  Serial.print("Paquete: ");
   Serial.println(counter);
 
   transmission_state = lora.startTransmit(jsonString.c_str());   
     if (transmission_state == RADIOLIB_ERR_NONE) {
-        Serial.println("Message is being transmitted...");
+        Serial.print("Message ");
+        Serial.print(counter);
+        Serial.println(" is being transmitted...");
         Serial.println("---------------------------------------");
         Serial.println("Message: ");
         Serial.println(jsonString);
@@ -121,8 +123,6 @@ void LORA_Send(JsonDocument& doc){
     } else {
         // Turn LED off if transmission fails
         digitalWrite(PINLED, HIGH);
-        delay(100);
-
         Serial.print("Error starting transmission, code: ");
         Serial.println(transmission_state);
     }
@@ -169,7 +169,9 @@ void LORA_Send(JsonDocument& doc){
         lora.finishTransmit();
         // Visual indication using LED (blinks 3 times)
     }
+    else { 
+      Serial.println("LoRa busy...");	
+    }
   digitalWrite(PINLED, LOW); // Apaga el LED
   Serial.println("---------------------------------------");
-
 }
