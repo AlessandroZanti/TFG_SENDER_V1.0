@@ -39,7 +39,7 @@ void ESP32_Setup(){
   pinMode(PINLED, OUTPUT);
   while (!Serial);
   Serial.println("Inicializando LoRa...");
-   for(int N = 0; N < 6; N++){
+   for(int N = 0; N < 5; N++){
     digitalWrite(PINLED, HIGH);
     delay(250);
     digitalWrite(PINLED,LOW);
@@ -128,6 +128,10 @@ void LORA_Send(JsonDocument& doc){
 }
 
   void check_transmission_status() {
+    unsigned long previousMillis = 0;  // Almacena el tiempo del último cambio de LED
+    const long interval = 250;         // Intervalo de parpadeo en milisegundos
+    int ledState = LOW;                // Estado actual del LED
+    int blinkCount = 0;                // Contador de parpadeos
     Serial.println("Checking transmission status...");
     Serial.print("FLAG before reset: ");
     Serial.println(transmitted_flag);
@@ -137,12 +141,20 @@ void LORA_Send(JsonDocument& doc){
         transmitted_flag = false;  // Reset the flag
 
         if (transmission_state == RADIOLIB_ERR_NONE) {
-            Serial.println("Message sent successfully.");
-            for (int i = 0; i < 2; i++) {
-              digitalWrite(PINLED, HIGH);
-              delay(200);
-              digitalWrite(PINLED, LOW);
-              delay(200);
+          Serial.println("Message sent successfully.");
+          
+          blinkCount = 0;  // Reiniciar el contador
+          unsigned long startMillis = millis();  // Guardar el tiempo de inicio
+          previousMillis = startMillis;
+  
+          while (blinkCount < 4) {  // 4 cambios (ON-OFF-ON-OFF) = 2 parpadeos
+              unsigned long currentMillis = millis();
+              if (currentMillis - previousMillis >= interval) {
+                  previousMillis = currentMillis;
+                  ledState = !ledState;  // Alternar estado del LED
+                  digitalWrite(PINLED, ledState);
+                  blinkCount++;
+              }
           }
         } else {
             Serial.print("Transmission failed, code: ");
