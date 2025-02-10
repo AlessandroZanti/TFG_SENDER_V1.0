@@ -45,8 +45,9 @@ void ESP32_Setup(){
     digitalWrite(PINLED,LOW);
     delay(250);
   }
-  // Inicializa el módulo LoRa con una frecuencia de 868 MHz
-  int state = lora.begin(frequency, bitrate, power, spreadFactor, syncWord, bandwidth, codingRate);
+  // Inicializa el módulo LoRa
+  //int state = lora.begin(frequency, bitrate, power, spreadFactor, syncWord, bandwidth, codingRate);
+  int state = lora.begin(frequency, bandwidth, spreadFactor, codingRate, syncWord, power, preambleLength);
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print("Error al inicializar LoRa, código: ");
     digitalWrite(PINLED, HIGH);
@@ -55,7 +56,7 @@ void ESP32_Setup(){
   }
   attachInterrupt(digitalPinToInterrupt(DIO1), set_transmitted_flag, RISING);
   lora.setPacketSentAction(set_transmitted_flag);
-
+  //lora.set(255);  // Aumentar buffer a 255 bytes (máximo permitido por LoRa)
   // Configura el Sync Word para asegurar comunicación entre dispositivos
   //lora.setSyncWord(syncWord);
   Serial.println("LoRa inicializado correctamente.");
@@ -133,10 +134,6 @@ void LORA_Send(JsonDocument& doc){
 }
 
   void check_transmission_status() {
-    unsigned long previousMillis = 0;  // Almacena el tiempo del último cambio de LED
-    const long interval = 250;         // Intervalo de parpadeo en milisegundos
-    int ledState = LOW;                // Estado actual del LED
-    int blinkCount = 0;                // Contador de parpadeos
     Serial.println("Checking transmission status...");
     //Serial.print("FLAG before reset: ");
     //Serial.println(transmitted_flag);
@@ -146,6 +143,10 @@ void LORA_Send(JsonDocument& doc){
         transmitted_flag = false;  // Reset the flag
 
         if (transmission_state == RADIOLIB_ERR_NONE) {
+          unsigned long previousMillis = 0;  // Almacena el tiempo del último cambio de LED
+          const long interval = 250;         // Intervalo de parpadeo en milisegundos
+          int ledState = LOW;                // Estado actual del LED
+          int blinkCount = 0;                // Contador de parpadeos
           Serial.println("Message sent successfully.");
           
           blinkCount = 0;  // Reiniciar el contador
