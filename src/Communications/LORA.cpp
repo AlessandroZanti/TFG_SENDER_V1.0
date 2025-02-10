@@ -140,13 +140,19 @@ void LORA_Send(JsonDocument& doc){
     Serial.println("Checking transmission status...");
     Serial.print("FLAG before reset: ");
     Serial.println(transmitted_flag);
-    delay (2500);
+    delay (1000); //!cambiar de nuevo a 2500 si problemas, como la mama de nickolasflowers
 
     if (transmitted_flag) {  // If transmission is complete
         transmitted_flag = false;  // Reset the flag
 
         if (transmission_state == RADIOLIB_ERR_NONE) {
             Serial.println("Message sent successfully.");
+            for (int i = 0; i < 3; i++) {
+              digitalWrite(PINLED, HIGH);
+              delay(200);
+              digitalWrite(PINLED, LOW);
+              delay(200);
+          }
         } else {
             Serial.print("Transmission failed, code: ");
             Serial.println(transmission_state);
@@ -154,12 +160,6 @@ void LORA_Send(JsonDocument& doc){
         // Clean up after transmission
         lora.finishTransmit();
         // Visual indication using LED (blinks 3 times)
-        for (int i = 0; i < 3; i++) {
-            digitalWrite(PINLED, HIGH);
-            delay(200);
-            digitalWrite(PINLED, LOW);
-            delay(200);
-        }
     }
   digitalWrite(PINLED, LOW); // Apaga el LED
   Serial.println("---------------------------------------");
