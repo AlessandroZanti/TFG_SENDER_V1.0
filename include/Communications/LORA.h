@@ -44,8 +44,10 @@ extern int transmission_state;          // Stores the transmission status
 
 void ESP32_Setup();
 void set_transmitted_flag();
-void LORA_Send(JsonDocument& doc);
-void get_all_data(JsonDocument& doc);
+void get_all_data_String(String &payload);
+void LORA_Send_String(String &payload);
+void get_all_data_JSON(JsonDocument& doc);
+void LORA_Send_JSON(JsonDocument& doc);
 void check_transmission_status();
 
 #endif

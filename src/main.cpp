@@ -24,8 +24,11 @@ void loop() {
     ENS160AHT21_Print();
     INA219_Print();
     TSL2561_Print();
+    String payload;
     StaticJsonDocument<256> doc;
-    get_all_data(doc);
-    LORA_Send(doc);
+    get_all_data_String(payload);
+    LORA_Send_String(payload);
+    //get_all_data_JSON(doc);
+    //LORA_Send_JSON(doc);
     delay(1000); //! Cambiar a 2500 si problemas
 }

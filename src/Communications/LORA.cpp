@@ -56,7 +56,7 @@ void ESP32_Setup(){
   }
   attachInterrupt(digitalPinToInterrupt(DIO1), set_transmitted_flag, RISING);
   lora.setPacketSentAction(set_transmitted_flag);
-  //lora.set(255);  // Aumentar buffer a 255 bytes (máximo permitido por LoRa)
+  //lora.set;  // Aumentar buffer a 255 bytes (máximo permitido por LoRa)
   // Configura el Sync Word para asegurar comunicación entre dispositivos
   //lora.setSyncWord(syncWord);
   Serial.println("LoRa inicializado correctamente.");
@@ -69,7 +69,26 @@ void ESP32_Setup(){
   delay(1000);
 }
 
-void get_all_data(JsonDocument& doc){
+void get_all_data_String(String &payload) {
+  payload = "{";  
+  payload += LoRa_Device + " = " + LoRa_MAC + ",";  // ID del dispositivo y MAC
+
+  // DHT22
+  payload += "{" + String(DHT22_Temp) + "," + String(DHT22_Hum) + "},";
+
+  // ENS160AHT21
+  payload += "{" + String(TempC) + "," + String(Humidity) + "," + String(Tvoc) + "," + String(Eco2) + "},";
+
+  // INA219
+  payload += "{" + String(current_mA) + "," + String(busVoltage) + "," + String(power_mW) + "," + String(shuntVoltage) + "},";
+
+  // TSL2561
+  payload += "{" + String(TSL2561_Lux) + "}";
+
+  payload += "}";  // Cierra el paquete principal
+}
+
+void get_all_data_JSON(JsonDocument& doc){
   // Agrega los datos de los sensores al objeto JSON
   doc["D"] = LoRa_Device;
   doc["M"] = LoRa_MAC;
@@ -96,8 +115,36 @@ void get_all_data(JsonDocument& doc){
   // ? si da problemas al enviar, llamar otra vez a la funcion LORA_Send para enviar 2 veces.
 }
 
+void LORA_Send_String(String &payload) {
+  // Encender LED antes de la transmisión
+  Serial.println("---------------------------------------");
+  Serial.println("---------------------------------------");
+  Serial.print("Paquete: ");
+  Serial.println(counter);
+  Serial.print("Tamaño: ");
+  Serial.print(payload.length());
+  Serial.println("bytes");
+  transmission_state = lora.startTransmit(payload.c_str());   
+  if (transmission_state == RADIOLIB_ERR_NONE) {
+      Serial.println("---------------------------------------");
+      Serial.print("Mensaje: ");
+      Serial.println(payload);
+      Serial.println("---------------------------------------");
+  } else {
+      // Apagar LED si la transmisión falla
+      digitalWrite(PINLED, HIGH);
+      Serial.print("Error en la transmisión, código: ");
+      Serial.println(transmission_state);
+  }
+
+  // Verificar el estado de la transmisión
+  check_transmission_status();
+  counter++;
+}
+
+
   // Envia el paquete
-void LORA_Send(JsonDocument& doc){
+void LORA_Send_JSON(JsonDocument& doc){
   String jsonString;
   serializeJson(doc, jsonString);  // Convert JSON document to a string
 
@@ -134,7 +181,7 @@ void LORA_Send(JsonDocument& doc){
 }
 
   void check_transmission_status() {
-    Serial.println("Checking transmission status...");
+    Serial.print("Estado del paquete: ");
     //Serial.print("FLAG before reset: ");
     //Serial.println(transmitted_flag);
     delay (2000); //!cambiar de nuevo a 2500 si problemas, como la mama de nickolasflowers
@@ -147,7 +194,7 @@ void LORA_Send(JsonDocument& doc){
           const long interval = 250;         // Intervalo de parpadeo en milisegundos
           int ledState = LOW;                // Estado actual del LED
           int blinkCount = 0;                // Contador de parpadeos
-          Serial.println("Message sent successfully.");
+          Serial.println("Enviado.");
           
           blinkCount = 0;  // Reiniciar el contador
           unsigned long startMillis = millis();  // Guardar el tiempo de inicio
@@ -163,7 +210,7 @@ void LORA_Send(JsonDocument& doc){
               }
           }
         } else {
-            Serial.print("Transmission failed, code: ");
+            Serial.print("Fallido.");
             Serial.println(transmission_state);
         }
         // Clean up after transmission
@@ -171,7 +218,7 @@ void LORA_Send(JsonDocument& doc){
         // Visual indication using LED (blinks 3 times)
     }
     else { 
-      Serial.println("LoRa busy...");	
+      Serial.println("LoRa ocupado.");	
     }
   digitalWrite(PINLED, LOW); // Apaga el LED
   Serial.println("---------------------------------------");
