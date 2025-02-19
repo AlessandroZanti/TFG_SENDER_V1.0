@@ -1,4 +1,4 @@
-#include "Communications/LORA.h"
+#include "Procesos/LORA.h"
 #include "Sensors/DHT22.h"
 #include "Sensors/ENS160AHT21.h"
 #include "Sensors/INA219.h"
@@ -127,7 +127,9 @@ void LORA_Send_String(String &payload) {
   transmission_state = lora.startTransmit(payload.c_str());   
   if (transmission_state == RADIOLIB_ERR_NONE) {
       Serial.println("---------------------------------------");
-      Serial.print("Mensaje: ");
+      Serial.print("Mensaje ");
+      Serial.print(counter);
+      serial.print(": ");
       Serial.println(payload);
       Serial.println("---------------------------------------");
   } else {
