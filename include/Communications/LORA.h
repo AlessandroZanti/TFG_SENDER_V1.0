@@ -19,21 +19,21 @@
 
 #define PINLED 35 // Pin del LED
 
-//#define frequency 870.0 // Frecuencia de operación en MHz
-//#define bitrate 250.0 // Bitrate en kbps
-//#define power 12 // Potencia de transmisión en dBm
-//#define spreadFactor 8 // Factor de esparcimiento
-//#define syncWord 0xA1 // Sync Word
-//#define bandwidth 22 // Ancho de banda en kHz
-//#define codingRate 12 // Tasa de codificación
-
 #define frequency 870.0 // Frecuencia de operación en MHz
-#define bandwidth 500.0 // Ancho de banda en kHz
-#define spreadFactor 6 // Factor de esparcimiento
-#define codingRate 5
+#define bitrate 250.0 // Bitrate en kbps
+#define power 12 // Potencia de transmisión en dBm
+#define spreadFactor 8 // Factor de esparcimiento
 #define syncWord 0xA1 // Sync Word
-#define power 12
-#define preambleLength 20
+#define bandwidth 22 // Ancho de banda en kHz
+#define codingRate 12 // Tasa de codificación
+
+//#define frequency 870.0 // Frecuencia de operación en MHz
+//#define bandwidth 500.0 // Ancho de banda en kHz
+//#define spreadFactor 6 // Factor de esparcimiento
+//#define codingRate 5
+//#define syncWord 0xA1 // Sync Word
+//#define power 12
+//#define preambleLength 20
 
 
 

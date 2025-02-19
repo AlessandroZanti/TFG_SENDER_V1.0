@@ -46,8 +46,8 @@ void ESP32_Setup(){
     delay(250);
   }
   // Inicializa el módulo LoRa
-  //int state = lora.begin(frequency, bitrate, power, spreadFactor, syncWord, bandwidth, codingRate);
-  int state = lora.begin(frequency, bandwidth, spreadFactor, codingRate, syncWord, power, preambleLength);
+  int state = lora.begin(frequency, bitrate, power, spreadFactor, syncWord, bandwidth, codingRate);
+  //int state = lora.begin(frequency, bandwidth, spreadFactor, codingRate, syncWord, power, preambleLength);
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print("Error al inicializar LoRa, código: ");
     digitalWrite(PINLED, HIGH);
