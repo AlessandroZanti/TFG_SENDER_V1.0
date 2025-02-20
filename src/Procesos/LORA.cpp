@@ -129,7 +129,7 @@ void LORA_Send_String(String &payload) {
       Serial.println("---------------------------------------");
       Serial.print("Mensaje ");
       Serial.print(counter);
-      serial.print(": ");
+      Serial.print(": ");
       Serial.println(payload);
       Serial.println("---------------------------------------");
   } else {
